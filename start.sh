@@ -49,6 +49,6 @@ if [ ! -d "panel" ]; then
     php artisan p:user:make
 fi
 
-echo "Server is running on {port}"
+echo "Server is running on your port"
 php-fpm --fpm-config /home/container/webserver/php-fpm/php-fpm.conf --daemonize
 nginx -c /home/container/webserver/nginx/nginx.conf -p /home/container/
