@@ -1,0 +1,27 @@
+FROM --platform=linux/amd64 php:8.1-fpm
+
+# Install necessary packages
+RUN apt-get update && apt-get install -y \
+    software-properties-common curl apt-transport-https ca-certificates gnupg
+
+RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list \
+    && curl -fsSL https://packages.sury.org/php/apt.gpg | gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg
+
+RUN rm /etc/apt/preferences.d/no-debian-php
+
+RUN apt-get update && apt-get install -y \
+    mariadb-server nginx tar unzip git redis-server \
+    php8.1-common php8.1-cli php8.1-gd php8.1-mysql php8.1-mbstring \
+    php8.1-bcmath php8.1-xml php8.1-fpm php8.1-curl php8.1-zip \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-install mysqli pdo pdo_mysql && docker-php-ext-enable pdo_mysql    
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+USER container
+ENV USER=container HOME=/home/container
+WORKDIR /home/container
+
+COPY ./../entrypoint.sh /entrypoint.sh
+CMD ["/bin/bash", "/entrypoint.sh"]
