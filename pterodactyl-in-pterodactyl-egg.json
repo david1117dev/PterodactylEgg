@@ -1,0 +1,31 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2023-12-02T07:15:36+00:00",
+    "name": "PterodactylEgg",
+    "author": "david@david1117.dev",
+    "description": "Pterodactyl inside pterodactyl",
+    "features": null,
+    "docker_images": {
+        "ghcr.io\/david1117dev\/pterodactyl-panel:latest": "ghcr.io\/david1117dev\/pterodactyl-panel:latest"
+    },
+    "file_denylist": [],
+    "startup": ".\/start.sh",
+    "config": {
+        "files": "{\r\n    \"webserver\/nginx\/conf.d\/default.conf\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"    listen \": \"    listen {{server.build.default.port}};\",\r\n            \"echo Server is running on {port}\": \"echo Server is running on {{server.build.default.port}};\"\r\n        }\r\n    },\r\n    \"start.sh\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"Server is running\": \"Server is running on {{server.build.default.port}}\"\r\n        }\r\n    }\r\n}",
+        "startup": "{\r\n    \"done\": \"Server is running\"\r\n}",
+        "logs": "{}",
+        "stop": "^C^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\ncd \/mnt\/server\r\n\r\n# Update package list and install Git\r\napt-get update\r\napt-get install -y git\r\n\r\n# Clone the GitHub repository\r\ngit clone https:\/\/github.com\/david1117dev\/PterodactylEgg \/mnt\/server\/\r\nmkdir tmp\r\nmkdir logs\r\nchmod 777 tmp\r\nchmod +x \/mnt\/server\/start.sh",
+            "container": "debian",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": []
+}
