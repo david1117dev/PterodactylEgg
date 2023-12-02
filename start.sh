@@ -40,11 +40,11 @@ if [ ! -d "panel" ]; then
     rm panel.tar.gz > /dev/null 2>&1
     cd panel > /dev/null 2>&1
     chmod -R 755 /home/container/panel/storage/* /home/container/panel/bootstrap/cache/ > /dev/null 2>&1
-	cp .env.example .env > /dev/null 2>&1
+    cp .env.example .env > /dev/null 2>&1
     composer install --no-dev --optimize-autoloader --ignore-platform-reqs > /dev/null 2>&1
     php artisan key:generate --force> /dev/null 2>&1
-    php artisan p:environment:setup > /dev/null 2>&1
-    php artisan p:environment:database > /dev/null 2>&1
+    php artisan p:environment:setup
+    php artisan p:environment:database
     php artisan migrate --seed --force
     php artisan p:user:make
 fi
